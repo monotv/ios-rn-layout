@@ -24,6 +24,16 @@ export default class App extends Component {
       pageHeight: dim.height,
       pageWidth: dim.width
     };
+    console.log(this.state.isPortrait)
+  }
+  componentDidMount() {
+    const dim = Dimensions.get("window");
+    this.state = {
+      isPortrait: dim.height > dim.width,
+      pageHeight: dim.height,
+      pageWidth: dim.width
+    };
+    console.log(this.state.isPortrait)
   }
   getNewDimensions(event) {
     this.setState({
@@ -32,6 +42,7 @@ export default class App extends Component {
       isPortrait:
         event.nativeEvent.layout.height > event.nativeEvent.layout.width
     });
+    this.forceUpdate()
   }
   render() {
     return (
@@ -39,25 +50,7 @@ export default class App extends Component {
         style={styles.container}
         onLayout={this.getNewDimensions.bind(this)}
       >
-        {this.state.isPortrait ? (
-          <View>
-            <Text style={styles.welcome}>Welcome to React Native!</Text>
-            <View style={{ width: this.state.pageWidth, height: 250 }}>
-              <Player url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
-            </View>
-            <Text style={styles.instructions}>To get started, edit App.js</Text>
-            <Text style={styles.instructions}>{instructions}</Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              width: this.state.pageWidth,
-              height: this.state.pageHeight
-            }}
-          >
-            <Player url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
-          </View>
-        )}
+        <Player width={this.state.pageWidth} height={this.state.isPortrait ? 250 : this.state.pageHeight} url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8" />
       </View>
     );
   }
