@@ -11,31 +11,15 @@ import {
 } from "react-native";
 
 class Player extends Component {
-  constructor() {
-    super();
-    const dim = Dimensions.get("window");
-    this.state = {
-      isPortrait: dim.height > dim.width,
-      pageHeight: dim.height,
-      pageWidth: dim.width
-    };
-  }
-  getNewDimensions(event) {
-    this.setState({
-      pageHeight: event.nativeEvent.layout.height,
-      pageWidth: event.nativeEvent.layout.width,
-      isPortrait:
-        event.nativeEvent.layout.height > event.nativeEvent.layout.width
-    });
-  }
   render() {
     return (
       <View
         style={{
-          flex: 1,
-          backgroundColor: "#000"
+          flexGrow: 0,
+          backgroundColor: "#000",
+          width: this.props.width,
+          height: this.props.height
         }}
-        onLayout={this.getNewDimensions.bind(this)}
       >
         <ActivityIndicator
           style={{
@@ -49,10 +33,12 @@ class Player extends Component {
           }}
         />
         <IRLPlayer
+          ref={component => this._player = component}
           url={this.props.url}
+          width={this.props.width}
+          height={this.props.height}
           style={{
-            width: this.state.pageWidth,
-            height: this.state.pageHeight
+            flex: 1
           }}
         />
         <TouchableHighlight
